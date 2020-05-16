@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3.js test</title>
+  </head>
+
+  <body>
+    <svg width="600" height="240">
+      <!-- サークルタグを作る -->
+    </svg>
+
+    <!-- D3.jsの読み込み -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- 以下入力 -->
+    <script>
+      (function () {
+        "use strict";
+
+        var WIDTH = 600;
+        var HEIGHT = 240;
+
+        var data = []; // 適当なデータを作る
+
+        function update(data) {
+          // データとサークルを結びつける
+          var circles = d3.select("svg").selectAll("circle").data(data);
+
+          // enter + update
+          circles
+            //命令文enterで必要な分のサークル要素を生成
+            .enter()
+            .append("circle")
+            .merge(circles)
+
+            .attr("cx", function (d, i) {
+              return i * 100 + 100;
+            }) // 引数を与えてサークルのX軸の表示位置を少しづつずらす
+            .attr("cy", HEIGHT / 2) //y軸
+            .attr("r", function (d) {
+              return d;
+            }) // 関数をせっていして3つのサークルの直径にそれぞれの値が入るように設定
+            .attr("fill", "rgb(50, 50, 200 ,0.5)");
+
+          // data = [20, 35];
+          // // データとサークルを再度結びつける
+          // circles = d3.select("svg").selectAll("circle").data(data);
+
+          // //update領域への指示
+          // circles
+          //   .attr("cx", function (d, i) {
+          //     return i * 100 + 100;
+          //   }) // 引数を与えてサークルのX軸の表示位置を少しづつずらす
+          //   .attr("cy", HEIGHT / 2) //y軸
+          //   .attr("r", function (d) {
+          //     return d;
+          //   }) // 関数をせっていして3つのサークルの直径にそれぞれの値が入るように再設定
+          //   .attr("fill", "rgb(200, 50, 50 ,0.5)");
+
+          //exit
+          circles
+            .exit()
+            // .attr("opacity", 0.1); //余った3つ目の要素の色を薄くする
+            .remove(); //余った3つ目の要素を消す
+
+          // // 以下、クリックアニメーション
+          // .attr("cursor", "pointer")
+          // .on("click", function (d, i) {
+          //   d3.select(this)
+          //     .transition() //アニメーション宣言
+          //     .duration(500) //アニメーションを0.5秒かけて再生
+          //     .attr("cy", -100) //縦幅より-100上へ消えていく
+          //     .on("end", function () {
+          //       alert("Ball" + i + " is gone！");
+          //     }); //dataの変数番号付きのアラート
+          // })
+
+          // // 以下、開始アニメーションの設定
+          // .transition() //アニメーション宣言
+          // // .delay(500) //0.5秒後にアニメーション開始
+          // .delay(function (d, i) {
+          //   return i * 200;
+          // }) //i秒後づつ時間差でアニメーションを開始
+          // // .ease(d3.easeBounce) //アニメーション：バウンド
+          // .ease(d3.easeElastic)
+          // .duration(1000) //アニメーションを1秒かけて再生
+          // .attr("cy", HEIGHT / 2); //縦幅1/2の1に迫り上がってくる
+
+          // 以下、終了アニメーションの設定
+          // .transition() //アニメーション宣言
+          // .attr("cy", -100);
+        }
+
+        data = [10, 15];
+        update(data);
+
+        data = [10, 12, 15];
+        update(data);
+
+        // data = [15];
+        // update(data);
+      })();
+    </script>
+  </body>
+</html>
